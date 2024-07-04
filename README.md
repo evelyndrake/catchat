@@ -8,6 +8,7 @@ A simple chat client. Implemented as a web app using React and Socket.io. Curren
 - Searchable gif selector (I downloaded an archive of like 600 smileys from super old forums from the 2000s)
 - Nice animations
 - Notification sounds
+---
 ![](docs/demo1.gif)
 ### Setup Instructions
 - Clone this repository
