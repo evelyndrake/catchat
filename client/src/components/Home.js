@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Home = ({ socket }) => {
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
-	const [loginError, setLoginError] = useState("");
+	const [loginError, setLoginError] = useState("Login failed");
 	const [inSignup , setInSignup] = useState(false);
 
 	const handleSubmit = async (e) => {
@@ -22,8 +23,9 @@ const Home = ({ socket }) => {
             navigate("/chat");
         } catch (error) {
             // Handle login errors (e.g., invalid credentials)
-            setLoginError(error.response ? error.response.data.message : "Login failed");
-			console.error(loginError);
+			const errorMessage = error.response ? error.response.data.message : "Login failed";
+			setLoginError(errorMessage);
+			toast.error(errorMessage, { icon: "🔒" });
         }
 	};
 
@@ -36,13 +38,15 @@ const Home = ({ socket }) => {
 			socket.emit("newUser", { userName, socketID: socket.id });
 			navigate("/chat");
 		} catch (error) {
-			setLoginError(error.response ? error.response.data.message : "Signup failed");
-			console.error(loginError);
+			const errorMessage = error.response ? error.response.data.message : "Signup failed";
+			setLoginError(errorMessage);
+			toast.error(errorMessage, { icon: "❌" });
 		}
 	};
 
 	return (
 		<>
+		<Toaster />
 		{!inSignup && (
 			<form className="home__container" onSubmit={handleSubmit}>
 				<h2 className="home__header">Sign in to KittyChato</h2>
