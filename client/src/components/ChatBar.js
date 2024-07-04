@@ -9,7 +9,7 @@ const ChatBar = ({ socket }) => {
 
 	return (
 		<div className="chat__sidebar">
-			<h2>CatoChat</h2>
+			<h2>KittyChato</h2>
 			<div>
 				<h4 className="chat__header">ACTIVE USERS</h4>
 				<div className="chat__users">

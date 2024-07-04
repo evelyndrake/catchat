@@ -5,6 +5,11 @@
   src: url('./fonts/QuietMeows.ttf');
 }
 
+@font-face {
+  font-family: 'MS Gothic2';
+  src: url('./fonts/MSGothic.ttf');
+}
+
 
 h2 {
   font-family: 'Quiet Meows';
@@ -16,7 +21,7 @@ h2 {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'ms gothic', sans-serif;
+  font-family: 'ms gothic', 'MS Gothic2', sans-serif;
 }
 .home__container {
   width: 100%;
@@ -25,6 +30,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #f9f5eb;
 }
 .home__container > * {
   margin-bottom: 10px;
@@ -35,6 +41,12 @@ h2 {
 .username__input {
   padding: 10px;
   width: 50%;
+  font-size: 18px;
+}
+.password__input {
+  padding: 10px;
+  width: 50%;
+  font-size: 18px;
 }
 .home__cta {
   width: 200px;
@@ -59,6 +71,15 @@ h2 {
   flex: 0.2;
   padding: 20px;
   border-right: 1px solid #fdfdfd;
+  
+}
+@media (max-width: 768px) {
+  .chat__sidebar {
+    display: none;
+  }
+  .chat__main {
+    flex: 1.0 !important;
+  }
 }
 .chat__main {
   height: 100%;
@@ -271,6 +292,11 @@ h2 {
 .sender__name {
   text-align: right;
 }
+.message__timestamp {
+  text-align: right;
+  font-size: 12px !important;
+}
+
 .message__status {
   /* position: fixed; */
   bottom: 50px;

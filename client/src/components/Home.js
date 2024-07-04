@@ -45,7 +45,7 @@ const Home = ({ socket }) => {
 		<>
 		{!inSignup && (
 			<form className="home__container" onSubmit={handleSubmit}>
-				<h2 className="home__header">Sign in to CatChat</h2>
+				<h2 className="home__header">Sign in to KittyChato</h2>
 				<label htmlFor="username">Username</label>
 				<input
 					type="text"
@@ -64,14 +64,16 @@ const Home = ({ socket }) => {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
+				<br />
 				<button className="home__cta">SIGN IN</button>
-				<button className="home__cta" onClick={() => setInSignup(true)}>SIGN UP</button>
+				<br />
+				<p>Need an account? <a href="#" onClick={() => setInSignup(true)}>Sign up here!</a></p>
 			</form>
 		)}
 		{
 			inSignup && (
 				<form className="home__container" onSubmit={handleSubmitSignup}>
-					<h2 className="home__header">Sign up to CatChat</h2>
+					<h2 className="home__header">Sign up for KittyChato</h2>
 					<label htmlFor="username">Username</label>
 					<input
 						type="text"
@@ -90,8 +92,10 @@ const Home = ({ socket }) => {
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 					/>
+					<br />
 					<button className="home__cta">SIGN UP</button>
-					<button className="home__cta" onClick={() => setInSignup(false)}>SIGN IN</button>
+					<br />
+					<p>Have an account? <a href="#" onClick={() => setInSignup(false)}>Sign in here!</a></p>
 				</form>
 			)
 		}

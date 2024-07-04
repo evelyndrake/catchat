@@ -122,6 +122,7 @@ const ChatFooter = ({ socket }) => {
 			socket.emit("message", {
 				text: message,
 				name: localStorage.getItem("userName"),
+				timestamp: new Date(),
 				id: `${socket.id}${Math.random()}`,
 				socketID: socket.id,
 			});
@@ -140,10 +141,13 @@ const ChatFooter = ({ socket }) => {
 				<del>s</del>
 			</button>
 			<button className="formatting-btn" onClick={handleColorClick}>
-				<strong>🎨</strong>
+				🎨
 			</button>
 			<button className="formatting-btn" onClick={handleRainbowClick}>
-				<strong>🌈</strong>
+				🌈
+			</button>
+			<button className="formatting-btn" onClick={toggleEmojiPicker}>
+				😀
 			</button>
 			<form className="form" onSubmit={handleSendMessage} id="message-footer">
 				<input
@@ -158,9 +162,9 @@ const ChatFooter = ({ socket }) => {
 				{showEmojiPicker && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
 				<div className="buttons-container">
 					<button type="submit" className="sendBtn">SEND</button>
-					<button className="smileyPicker__btn" onClick={toggleEmojiPicker}>
+					{/* <button className="smileyPicker__btn" onClick={toggleEmojiPicker}>
 						{showEmojiPicker ? 'HIDE SMILEYS' : 'SHOW SMILEYS'}
-					</button>
+					</button> */}
 				</div>
 				{showColorPicker && <ColorPicker onColorSelect={handleColorSelect}/>}
 			</form>

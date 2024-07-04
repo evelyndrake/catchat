@@ -33,7 +33,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
         const smilieRegex = /:([a-zA-Z0-9_]+):/g;
         return text.replace(smilieRegex, (match, smilieName) => {
             const imageUrl = `http://localhost:4000/smilies/${smilieName}.gif`;
-            return `<img src="${imageUrl}" class="emoji" alt="${smilieName}" style="height: 20px; margin-left: 5px; margin-right: 5px;"/>`;
+            return `<img src="${imageUrl}" class="emoji" alt="${smilieName}" style="max-width: 100%; max-height: 40px; margin-left: 5px; margin-right: 5px;"/>`;
         });
     };
 
@@ -51,13 +51,16 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                     message.name === localStorage.getItem("userName") ? (
                         <div className="message__chats" key={message.id}>
                             <p className="sender__name">You</p>
+							<p className="message__timestamp">{new Date(message.timestamp).toLocaleTimeString()}</p>
                             <div className="message__sender" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
                         </div>
                     ) : (
                         <div className="message__chats" key={message.id}>
                             <p>{message.name}</p>
+							<p className="message__timestamp" style={{textAlign: "left"}}>{new Date(message.timestamp).toLocaleTimeString()}</p>
                             <div className="message__recipient" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
                         </div>
+						
                     ),
                 )}
 

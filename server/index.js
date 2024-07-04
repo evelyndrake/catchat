@@ -45,6 +45,7 @@ socketIO.on("connection", (socket) => {
 		const message = new ChatMessage({
 			name: data.name,
 			text: data.text,
+			timestamp: new Date(),
 		});
 		message.save();
 		socketIO.emit("messageResponse", data);
@@ -169,7 +170,8 @@ app.post("/api/accounts", async (req, res) => {
 });
 
 const getChatHistory = async () => {
-	return await ChatMessage.find().sort('-timestamp').limit(100); // Adjust limit as needed
+	const history = await ChatMessage.find().sort('-timestamp').limit(100); // Get the last 100 messages
+	return history.reverse();
 };
 
 app.get('/api/chat/history', async (req, res) => {
