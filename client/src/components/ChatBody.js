@@ -13,9 +13,9 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 	return (
 		<>
 			<header className="chat__mainHeader">
-				<p>Hangout with Colleagues</p>
+				<p>Chatting with friends!</p>
 				<button className="leaveChat__btn" onClick={handleLeaveChat}>
-					LEAVE CHAT
+					LOG OUT
 				</button>
 			</header>
 

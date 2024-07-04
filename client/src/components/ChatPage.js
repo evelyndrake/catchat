@@ -8,15 +8,33 @@ const ChatPage = ({ socket }) => {
 	const [typingStatus, setTypingStatus] = useState("");
 	const lastMessageRef = useRef(null);
 
-	useEffect(() => {
-		socket.on("messageResponse", (data) =>
-			setMessages([...messages, data]),
-		);
-	}, [socket, messages]);
+	const fetchChatHistory = async () => {
+		try {
+			const response = await fetch("http://localhost:4000/api/chat/history");
+			const data = await response.json();
+			setMessages(data);
+		} catch (error) {
+			console.error("Failed to fetch chat history:", error);
+		}
+	}
 
 	useEffect(() => {
-		socket.on("typingResponse", (data) => setTypingStatus(data));
-	}, [socket]);
+        fetchChatHistory(); // Load chat history when component mounts
+    }, []); // Empty dependency array means this effect runs once on mount
+
+    useEffect(() => {
+        const messageListener = (data) => setMessages((prevMessages) => [...prevMessages, data]);
+        const typingListener = (data) => setTypingStatus(data);
+
+        socket.on("messageResponse", messageListener);
+        socket.on("typingResponse", typingListener);
+
+        // Cleanup listeners on component unmount
+        return () => {
+            socket.off("messageResponse", messageListener);
+            socket.off("typingResponse", typingListener);
+        };
+    }, [socket]);
 
 	useEffect(() => {
 		// 👇️ scroll to bottom every time messages change
