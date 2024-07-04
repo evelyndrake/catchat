@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-
+const path = require('path');
+const fs = require('fs');
 app.use(express.json());
 const PORT = 4000;
 const http = require("http").Server(app);
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require("mongoose");
 const Account = require("./models/accountModel");
@@ -29,16 +29,12 @@ const client = new MongoClient(process.env.MONGODB_URI, { // Set up the MongoDB 
 	}
 });
 
-
 mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
   })
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.error(err));
-
-
-
 
 let users = [];
 
@@ -76,12 +72,18 @@ socketIO.on("connection", (socket) => {
 	});
 });
 
+// Endpoint to get all connected users
+app.get("/api/users", (req, res) => {
+	res.json(users);
+});
+
 app.get("/api", (req, res) => {
 	res.json({
 		message: "Hello world",
 	});
 });
 app.use(cors());
+
 // Endpoint to login given a username and password, checking against the UUID
 app.post("/api/accounts/login", async (req, res) => {
 	// Request contains fields: username, password. Convert these to strings
@@ -113,6 +115,24 @@ app.post("/api/accounts/login", async (req, res) => {
 		});
 	}
 });
+
+app.use(express.static('public'));
+
+// Endpoint to list smilies
+app.get("/smilies", (req, res) => {
+const smiliesDir = path.join(__dirname, 'public', 'smilies');
+fs.readdir(smiliesDir, (err, files) => {
+	if (err) {
+	console.error("Failed to list smilies:", err);
+	return res.status(500).send("Failed to list smilies.");
+	}
+	// Filter out non-GIF files if necessary
+	const gifFiles = files.filter(file => file.endsWith('.gif'));
+	res.json(gifFiles);
+});
+});
+
+
 
 app.use(cors());
 // Endpoint to create an account and add to the database
@@ -149,7 +169,7 @@ app.post("/api/accounts", async (req, res) => {
 });
 
 const getChatHistory = async () => {
-	return await ChatMessage.find().sort('timestamp').limit(100); // Adjust limit as needed
+	return await ChatMessage.find().sort('-timestamp').limit(100); // Adjust limit as needed
 };
 
 app.get('/api/chat/history', async (req, res) => {

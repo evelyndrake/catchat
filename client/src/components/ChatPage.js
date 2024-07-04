@@ -2,11 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
+import useSound from "use-sound";
+// import meowSFX from "../sounds/meow_notif_send.mp3";
+
+const meowSFX = require("../sounds/meow_notif_recieve.mp3");
+const meowSFXSent = require("../sounds/meow_notif_send.mp3");
 
 const ChatPage = ({ socket }) => {
 	const [messages, setMessages] = useState([]);
 	const [typingStatus, setTypingStatus] = useState("");
 	const lastMessageRef = useRef(null);
+	const [meowNotifSend] = useSound(meowSFXSent, { volume: 0.1 });
+	const [meowNotifRecieve] = useSound(meowSFX, { volume: 0.5 });
 
 	const fetchChatHistory = async () => {
 		try {
@@ -23,7 +30,16 @@ const ChatPage = ({ socket }) => {
     }, []); // Empty dependency array means this effect runs once on mount
 
     useEffect(() => {
-        const messageListener = (data) => setMessages((prevMessages) => [...prevMessages, data]);
+		const messageListener = (data) => {
+			setMessages((prevMessages) => [...prevMessages, data]);
+			// Play sound if message is not from current user
+			if (data.socketID !== socket.id) {
+				meowNotifRecieve();
+			} else {
+				meowNotifSend();
+			}
+			console.log(socket);
+		};
         const typingListener = (data) => setTypingStatus(data);
 
         socket.on("messageResponse", messageListener);
@@ -34,7 +50,7 @@ const ChatPage = ({ socket }) => {
             socket.off("messageResponse", messageListener);
             socket.off("typingResponse", typingListener);
         };
-    }, [socket]);
+    }, [socket, meowNotifRecieve, meowNotifSend]);
 
 	useEffect(() => {
 		// 👇️ scroll to bottom every time messages change

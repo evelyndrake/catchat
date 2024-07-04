@@ -1,38 +1,27 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.emoji-picker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); /* Creates a responsive grid with items of at least 40px wide */
+  gap: 20px; /* Space between grid items */
+  padding: 10px; /* Padding around the grid */
+  max-height: 750px; /* Optional: Set a max height for the picker */
+  overflow-y: auto; /* Optional: Add scroll for overflow */
+  overflow-x: hidden;
+  /* overflow-x: none; */
+  animation: fadeIn2 0.5s ease-out;
+
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes fadeIn2 {
+  from { opacity: 0; transform: translateY(-500px) scale(1); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
