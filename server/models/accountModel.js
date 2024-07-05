@@ -6,6 +6,7 @@ const accountSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   badges: { type: Array, default: [] },
   bio: { type: String, default: '' },
+  pronouns : { type: String, default: 'unset' },
 });
 
 const Account = mongoose.model('Account', accountSchema);

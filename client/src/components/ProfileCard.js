@@ -5,7 +5,10 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
     
     const [profileBadges, setProfileBadges] = useState([]);
     const [profileBio, setProfileBio] = useState("");
+    const [profilePronouns, setProfilePronouns] = useState("");
     const cardRef = useRef(null);
+
+    
 
     const fetchProfileBadges = async () => {
 		try {
@@ -28,9 +31,21 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
         }
     }
 
+    const fetchProfilePronouns = async () => {
+        try {
+            const response = await axios.get(`http://localhost:4000/api/accounts/${username}/pronouns`);
+            const data = await response.data;
+            setProfilePronouns(data);
+        }
+        catch (error) {
+            console.error("Failed to fetch pronouns:", error);
+        }
+    }
+
     useEffect(() => {
         fetchProfileBadges();
         fetchProfileBio();
+        fetchProfilePronouns();
     }, [username, isVisible]);
 
     useEffect(() => {
@@ -52,10 +67,15 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
                 <strong>X</strong>
             </button>
 
-            <h3>{username}</h3>
+            <div className="profile-card__name">
+                <h3>{username}</h3>  
+                {profilePronouns !== 'unset' && <i>({profilePronouns})</i>}
+            </div>
+            
             <div className="profile-card__bio">
                 <p>{profileBio}</p>
             </div>
+
             
             {/* <br /> */}
             <div className="profile-card__badges">

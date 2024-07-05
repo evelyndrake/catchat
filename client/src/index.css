@@ -293,9 +293,7 @@ h2 {
 .message__chats > p {
   font-size: 18px;
 }
-.sender__name {
-  text-align: right;
-}
+
 .message__timestamp {
   text-align: right;
   font-size: 12px !important;
@@ -357,7 +355,7 @@ h2 {
   align-items: left;
   flex-wrap: wrap;
   max-width: 800px;
-  max-height: 600px;
+  max-height: 400px;
   overflow-y: auto;
 }
 
@@ -380,7 +378,8 @@ h2 {
   background-color: #ffffff;
   /* border: 1px solid #607eaa; */
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 10px;
+  margin-bottom: 15px;
   margin-right: 4px;
   padding: 2px;
   border-radius: 4px; 
@@ -398,10 +397,12 @@ h2 {
   opacity: 0.8;
   /* Full screen width and height */
   width: 50vw;
-  height: 33vh;
+  max-height: 33vh;
   padding: 15px;
   color: #fff;
   animation: fadeIn3 0.5s ease-out;
+  overflow-y: auto;
+
 }
 
 @keyframes fadeIn3 {
@@ -437,4 +438,26 @@ h2 {
   right: 15px;
   cursor: pointer;
   font-size: 16px;
+}
+
+
+
+.message__yourname {
+  text-align: right !important;
+}
+
+.message__yourname:hover, .message__username:hover {
+  animation: shake 0.1s ease-in-out !important;
+  color: #607eaa;
+}
+
+@keyframes nameHover {
+  
+}
+
+.profile-card__name {
+  /* side-by-side */
+  display: flex;
+  /* align vertically to bottom */
+  align-items: flex-end;
 }

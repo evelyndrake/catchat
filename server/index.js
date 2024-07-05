@@ -258,7 +258,7 @@ app.post("/api/accounts", async (req, res) => {
 	}
 });
 
-// API to set a user's bio
+// Endpoint to set a user's bio
 app.post('/api/accounts/:username/bio', async (req, res) => {
 	const accountUsername = req.params.username;
 	const account = await Account.findOne({ username
@@ -274,7 +274,7 @@ app.post('/api/accounts/:username/bio', async (req, res) => {
 	res.json(account);
 });
 
-// API to get a user's bio
+// Endpoint to get a user's bio
 app.get('/api/accounts/:username/bio', async (req, res) => {
 	const accountUsername = req.params.username;
 	const account = await Account.findOne({ username
@@ -285,6 +285,36 @@ app.get('/api/accounts/:username/bio', async (req, res) => {
 		});
 	}
 	res.json(account.bio);
+}
+);
+
+// Endpoint to set a user's pronouns
+app.post('/api/accounts/:username/pronouns', async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne({ username
+		: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const pronouns = req.body.pronouns;
+	account.pronouns = pronouns;
+	await account.save();
+	res.json(account);
+});
+
+// Endpoint to get a user's pronouns
+app.get('/api/accounts/:username/pronouns', async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne({ username
+		: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	res.json(account.pronouns);
 }
 );
 
