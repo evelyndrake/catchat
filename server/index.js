@@ -119,35 +119,43 @@ app.post("/api/accounts/login", async (req, res) => {
 
 app.use(express.static('public'));
 
+let smileyFiles = [];
+// Load all smileys into memory
+const smileyDir = path.join(__dirname, 'public', 'smilies');
+fs.readdir(smileyDir, (err, files) => {
+	if (err) {
+		console.error("Failed to list smileys:", err);
+		return res.status(500).send("Failed to list smileys.");
+	}
+	smileyFiles = files;
+	console.log(`Loaded ${smileyFiles.length} smileys`);
+});
+
 // Endpoint to list smilies
 app.get("/smilies", (req, res) => {
-	const smiliesDir = path.join(__dirname, 'public', 'smilies');
-	fs.readdir(smiliesDir, (err, files) => {
-		if (err) {
-		console.error("Failed to list smilies:", err);
-		return res.status(500).send("Failed to list smilies.");
-		}
-		// Filter out non-GIF files if necessary
-		const gifFiles = files.filter(file => file.endsWith('.gif'));
-		res.json(gifFiles);
-	});
+	res.json(smileyFiles);
 });
 
 const badgesPerPage = 500;
-// Endpoint to get badges (paginated)
-app.get("/badges", (req, res) => {
-	const badgeDir = path.join(__dirname, 'public', 'badges');
-	const page = parseInt(req.query.page) || 1;
-	fs.readdir(badgeDir, (err, files) => {
-		if (err) {
+let badgeFiles = [];
+// Load all badges into memory
+const badgeDir = path.join(__dirname, 'public', 'badges');
+fs.readdir(badgeDir, (err, files) => {
+	if (err) {
 		console.error("Failed to list badges:", err);
 		return res.status(500).send("Failed to list badges.");
-		}
-		const start = (page - 1) * badgesPerPage;
-		const end = start + badgesPerPage;
-		const badgeFiles = files.slice(start, end);
-		res.json(badgeFiles);
-	});
+	}
+	badgeFiles = files;
+	console.log(`Loaded ${badgeFiles.length} badges`);
+});
+
+// Endpoint to get badges (paginated)
+app.get("/badges", (req, res) => {
+	const page = parseInt(req.query.page) || 1;
+	const start = (page - 1) * badgesPerPage;
+	const end = start + badgesPerPage;
+	const paginatedBadgeFiles = badgeFiles.slice(start, end);
+    res.json(paginatedBadgeFiles);
 	// Example of a query to page 2:
 	// http://localhost:4000/badges?page=2
 	// Access badge X:
@@ -156,15 +164,11 @@ app.get("/badges", (req, res) => {
 
 // Endpoint to get number of badge pages
 app.get("/badges/pages", (req, res) => {
-	const badgeDir = path.join(__dirname, 'public', 'badges');
-	fs.readdir(badgeDir, (err, files) => {
-		if (err) {
-		console.error("Failed to list badges:", err);
-		return res.status(500).send("Failed to list badges.");
-		}
-		const numPages = Math.ceil(files.length / badgesPerPage);
-		res.json(numPages);
-	});
+	if (!badgeFiles || badgeFiles.length === 0) {
+        return res.status(500).send("No badges loaded.");
+    }
+    const numPages = Math.ceil(badgeFiles.length / badgesPerPage);
+    res.json(numPages);
 });
 
 // Endpoint to return the badges array of a user
