@@ -171,6 +171,22 @@ app.get("/badges/pages", (req, res) => {
     res.json(numPages);
 });
 
+// Endpoint to search for badges matching query
+app.get("/badges/search", (req, res) => {
+	const query = req.query.q;
+	if (!query) {
+		return res.status(400).json({
+			message: "Query is required",
+		});
+	}
+	const matchingBadges = badgeFiles.filter(filename =>  // Case insensitive search
+        filename.toLowerCase().includes(query.toLowerCase())
+    );
+	res.json(matchingBadges);
+	// Example query:
+	// http://localhost:4000/badges/search?q=star
+});
+
 // Endpoint to return the badges array of a user
 app.get("/api/accounts/:username/badges", async (req, res) => {
 	const accountUsername = req.params.username;

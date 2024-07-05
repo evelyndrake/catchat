@@ -41,7 +41,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
         const smilieRegex = /:([a-zA-Z0-9_]+):/g;
         return text.replace(smilieRegex, (match, smilieName) => {
             const imageUrl = `http://localhost:4000/smilies/${smilieName}.gif`;
-            return `<img src="${imageUrl}" class="emoji" alt="${smilieName}" style="max-width: 100%; max-height: 40px; margin-left: 5px; margin-right: 5px;"/>`;
+            return `<img src="${imageUrl}" class="emoji" title="${smilieName}" alt="${smilieName}" style="max-width: 100%; max-height: 40px; margin-left: 5px; margin-right: 5px;"/>`;
         });
     };
 

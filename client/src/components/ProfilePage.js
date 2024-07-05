@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import ChatBar from "./ChatBar";
 import axios from "axios";
 import ProfileCard from "./ProfileCard";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProfilePage = ({ socket }) => {
 
@@ -21,6 +22,39 @@ const ProfilePage = ({ socket }) => {
 	for (let i = 1; i <= Math.ceil(badges.length / badgesPerPage); i++) {
 		pageNumbers.push(i);
 	}
+	// Search functionality
+	const [searchTerm, setSearchTerm] = useState("");
+	const [searchResults, setSearchResults] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const loadingGif = require("../img/loading.gif");
+
+	useEffect(() => {
+		setSearchResults([]);
+		setIsLoading(true);
+		// Clear the previous timeout if the searchTerm changes before the delay is over
+		const delayDebounceFn = setTimeout(() => {
+			
+			if (searchTerm) {
+				
+				axios.get(`http://localhost:4000/badges/search?q=${searchTerm}`)
+					.then(response => {
+						setSearchResults(response.data);
+						setIsLoading(false);
+					})
+					.catch(error => {
+						console.error("Error fetching search results:", error);
+						setSearchResults([]);
+						setIsLoading(false);
+					});
+			} else {
+				// Optionally clear search results when there's no search term
+				setSearchResults([]);
+			}
+		}, 1000); // 1000ms delay
+	
+		// Cleanup function to clear the timeout if the component unmounts
+		return () => clearTimeout(delayDebounceFn);
+	}, [searchTerm]);
 
 	const fetchBadges = async () => {
 		try {
@@ -125,6 +159,7 @@ const ProfilePage = ({ socket }) => {
 		updateBio(bio);
 		updatePronouns(pronouns);
 		fetchProfileBadges();
+		toast.success("Profile updated!");
 	}
 
 	useEffect(() => {
@@ -137,6 +172,7 @@ const ProfilePage = ({ socket }) => {
 
 	return (
 		<div className="chat">
+			<Toaster />
 			<ChatBar socket={socket} />
 			
 			<div className="chat__main">
@@ -163,30 +199,56 @@ const ProfilePage = ({ socket }) => {
 					{profileBadges.map((badge, index) => (
 						<div key={index} className="badge" onClick={() => removeBadgeFromProfile(badge)}>
 							{/* <p>{badge}</p> */}
-							<img className="badge" src={`http://localhost:4000/badges/${badge}.gif`} alt={badge} />
+							<img title={badge} className="badge" src={`http://localhost:4000/badges/${badge}.gif`} alt={badge} />
 						</div>
 					))}
 				</div>
 				<h3 style={{marginTop: '5px', marginBottom: '5px'}}>All badges:</h3>
-				<div className="chat__badges">
-					{currentBadges.map((badge, index) => (
-						<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
-							{/* <p>{badge}</p> */}
-							<img className="badge" src={`http://localhost:4000/badges/${badge}`} alt={badge} />
+				<input
+					type="text"
+					placeholder="Search badges..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+				{searchTerm === '' && (
+					<div>
+						<div className="chat__badges">
+							{currentBadges.map((badge, index) => (
+								<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
+									{/* <p>{badge}</p> */}
+									<img title={badge.slice(0, -4)} className="badge" src={`http://localhost:4000/badges/${badge}`} alt={badge} />
+								</div>
+							))}
 						</div>
-					))}
-				</div>
-				<div className="pagination">
-                    {pageNumbers.map(number => (
-                        <button
-							key={number}
-							onClick={() => paginate(number)}
-							className={currentPage === number ? 'selectedPage' : 'page'}
-						>
-                            {number}
-                        </button>
-                    ))}
-                </div>
+						<div className="pagination">
+							{pageNumbers.map(number => (
+								<button
+									key={number}
+									onClick={() => paginate(number)}
+									className={currentPage === number ? 'selectedPage' : 'page'}
+								>
+									{number}
+								</button>
+							))}
+						</div>
+					</div>
+				)}
+				{searchTerm !== '' && (
+					
+					<div>
+						{isLoading && (
+							<img src={loadingGif} alt="Loading..." style={{width: '50px', height: '50px', marginTop: '5px', marginBottom: '5px'}} />
+						)}
+						<div className="chat__badges">
+							{searchResults.map((badge, index) => (
+								<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
+									{/* <p>{badge}</p> */}
+									<img title={badge.slice(0, -4)} className="badge" src={`http://localhost:4000/badges/${badge}`} alt={badge} />
+								</div>
+							))}
+						</div>
+					</div>
+				)}
 				<div className="profileButtons-container">
 					<button onClick={toggleProfileCard} className="smileyPicker__btn">Preview</button>
 					<button onClick={saveChanges} className="sendBtn" style={{marginLeft: '10px'}}>Save</button>

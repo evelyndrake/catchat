@@ -44,6 +44,7 @@ const EmojiPicker = ({ onEmojiSelect }) => {
         <div className="emoji-picker">
             {filteredSmilies.map((smiley) => (
             <img
+                title={smiley} 
                 key={smiley}
                 className="emoji"
                 src={`http://localhost:4000/smilies/${smiley}`}

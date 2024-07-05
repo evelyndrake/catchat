@@ -82,7 +82,7 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
                 {profileBadges.map((badge, index) => (
                     <div key={index} className="badge">
                         {/* <p>{badge}</p> */}
-                        <img className="badge" src={`http://localhost:4000/badges/${badge}.gif`} alt={badge} />
+                        <img title={badge} className="badge" src={`http://localhost:4000/badges/${badge}.gif`} alt={badge} />
                     </div>
                 ))}
             </div>
