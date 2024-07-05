@@ -15,6 +15,7 @@ A simple chat client. Implemented as a web app using React and Socket.io. Curren
 - Clone this repository
 - Create a `.env` file in `server`
   - It contains `MONGODB_URI=YOUR_URI`, where `YOUR_URI` is your MongoDB Atlas URI 
+- Create a folder called `banners` in `/server/public` and fill it with [88x31 gif buttons](https://cyber.dabamos.de/88x31/index.html)
 - Open 2 terminal windows
 - In window 1:
   - `cd client`

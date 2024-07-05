@@ -121,19 +121,108 @@ app.use(express.static('public'));
 
 // Endpoint to list smilies
 app.get("/smilies", (req, res) => {
-const smiliesDir = path.join(__dirname, 'public', 'smilies');
-fs.readdir(smiliesDir, (err, files) => {
-	if (err) {
-	console.error("Failed to list smilies:", err);
-	return res.status(500).send("Failed to list smilies.");
+	const smiliesDir = path.join(__dirname, 'public', 'smilies');
+	fs.readdir(smiliesDir, (err, files) => {
+		if (err) {
+		console.error("Failed to list smilies:", err);
+		return res.status(500).send("Failed to list smilies.");
+		}
+		// Filter out non-GIF files if necessary
+		const gifFiles = files.filter(file => file.endsWith('.gif'));
+		res.json(gifFiles);
+	});
+});
+
+const badgesPerPage = 500;
+// Endpoint to get badges (paginated)
+app.get("/badges", (req, res) => {
+	const badgeDir = path.join(__dirname, 'public', 'badges');
+	const page = parseInt(req.query.page) || 1;
+	fs.readdir(badgeDir, (err, files) => {
+		if (err) {
+		console.error("Failed to list badges:", err);
+		return res.status(500).send("Failed to list badges.");
+		}
+		const start = (page - 1) * badgesPerPage;
+		const end = start + badgesPerPage;
+		const badgeFiles = files.slice(start, end);
+		res.json(badgeFiles);
+	});
+	// Example of a query to page 2:
+	// http://localhost:4000/badges?page=2
+	// Access badge X:
+	// http://localhost:4000/badges/X.gif
+});
+
+// Endpoint to get number of badge pages
+app.get("/badges/pages", (req, res) => {
+	const badgeDir = path.join(__dirname, 'public', 'badges');
+	fs.readdir(badgeDir, (err, files) => {
+		if (err) {
+		console.error("Failed to list badges:", err);
+		return res.status(500).send("Failed to list badges.");
+		}
+		const numPages = Math.ceil(files.length / badgesPerPage);
+		res.json(numPages);
+	});
+});
+
+// Endpoint to return the badges array of a user
+app.get("/api/accounts/:username/badges", async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne
+	({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
 	}
-	// Filter out non-GIF files if necessary
-	const gifFiles = files.filter(file => file.endsWith('.gif'));
-	res.json(gifFiles);
-});
+	res.json(account.badges);
 });
 
+// Endpoint to add a badge to a user
+app.post("/api/accounts/:username/badges", async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne
+	({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const badge = req.body.badge;
+	// Ensure the badge isn't already in the array
+	if (account.badges.includes(badge)) {
+		return res.status(400).json({
+			message: "Badge already exists",
+		});
+	}
+	account.badges.push(badge);
+	await account.save();
+	res.json(account.badges);
+});
 
+// Endpoint to remove a badge from a user
+app.delete("/api/accounts/:username/badges", async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account
+	.findOne({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const badge = req.body.badge;
+	// Ensure the badge is in the array
+	if (!account.badges.includes(badge)) {
+		return res.status(400).json({
+			message: "Badge does not exist",
+		});
+	}
+	account.badges = account.badges.filter(b => b !== badge);
+	await account.save();
+	res.json(account.badges);
+});
 
 app.use(cors());
 // Endpoint to create an account and add to the database
@@ -168,6 +257,36 @@ app.post("/api/accounts", async (req, res) => {
 		});
 	}
 });
+
+// API to set a user's bio
+app.post('/api/accounts/:username/bio', async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne({ username
+		: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const bio = req.body.bio;
+	account.bio = bio;
+	await account.save();
+	res.json(account);
+});
+
+// API to get a user's bio
+app.get('/api/accounts/:username/bio', async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne({ username
+		: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	res.json(account.bio);
+}
+);
 
 const getChatHistory = async () => {
 	const history = await ChatMessage.find().sort('-timestamp').limit(100); // Get the last 100 messages

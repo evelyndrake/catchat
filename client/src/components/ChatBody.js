@@ -1,14 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { stripHtml } from "string-strip-html";
+import ProfileCard from "./ProfileCard";
 
 const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 	const navigate = useNavigate();
-
+	const [visibleProfile, setVisibleProfile] = useState(false);
+	const [selectedUsername, setSelectedUsername] = useState("");
+	
 	const handleLeaveChat = () => {
 		localStorage.removeItem("userName");
 		navigate("/");
 		window.location.reload();
+	};
+
+	const toggleProfileCard = (username) => {
+		setVisibleProfile(!visibleProfile);
+		setSelectedUsername(username);
 	};
 
 	const renderMessageWithSmilies = (text) => {
@@ -45,8 +53,9 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 					LOG OUT
 				</button>
 			</header>
-
+			{setVisibleProfile && <ProfileCard username={selectedUsername} isVisible={visibleProfile} toggleVisible={toggleProfileCard}/>}
 			<div className="message__container">
+				
                 {messages.map((message) =>
                     message.name === localStorage.getItem("userName") ? (
                         <div className="message__chats" key={message.id}>
@@ -56,9 +65,12 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                         </div>
                     ) : (
                         <div className="message__chats" key={message.id}>
-                            <p>{message.name}</p>
+							<a onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
+								{message.name}
+							</a>
 							<p className="message__timestamp" style={{textAlign: "left"}}>{new Date(message.timestamp).toLocaleTimeString()}</p>
                             <div className="message__recipient" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
+							
                         </div>
 						
                     ),
