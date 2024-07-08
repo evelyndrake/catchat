@@ -65,12 +65,12 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
             </button>
 
             <div className="profile-card__name">
-                <h3>{username}</h3>  
-                {profilePronouns !== 'unset' && <i>({profilePronouns})</i>}
+                <h3 className="profile-card__text">{username}</h3>  
+                {profilePronouns !== 'unset' && <i className="profile-card__text">({profilePronouns})</i>}
             </div>
             
             <div className="profile-card__bio">
-                <p>{profileBio}</p>
+                <p className="profile-card__text">{profileBio}</p>
             </div>
 
             

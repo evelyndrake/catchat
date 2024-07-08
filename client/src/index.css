@@ -489,6 +489,10 @@ label {
   font-size: 16px;
 }
 
+.profile-card__text {
+  color: white;
+}
+
 
 
 .message__yourname {
