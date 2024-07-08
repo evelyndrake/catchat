@@ -1,12 +1,18 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { stripHtml } from "string-strip-html";
 import ProfileCard from "./ProfileCard";
+import axios from "axios";
+import { useParams } from "react-router";
+import toast, { Toaster } from "react-hot-toast";
 
 const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 	const navigate = useNavigate();
 	const [visibleProfile, setVisibleProfile] = useState(false);
 	const [selectedUsername, setSelectedUsername] = useState("");
+	const [serverName , setServerName] = useState("");
+	const { server } = useParams();
+	const [serverDescription, setServerDescription] = useState("");
 	
 	const handleLeaveChat = () => {
 		localStorage.removeItem("userName");
@@ -18,6 +24,20 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 		setVisibleProfile(!visibleProfile);
 		setSelectedUsername(username);
 	};
+
+	// On server change, set server name
+	useEffect(() => {
+		axios.get(`http://localhost:4000/api/servers/${server}`)
+			.then((response) => {
+				setServerName(response.data.displayName);
+				if (response.data.description) {
+					setServerDescription(response.data.description);
+				} else {
+					setServerDescription("Chatting with friends!");
+				}
+			});
+	}, [server]);
+
 
 	const renderMessageWithSmilies = (text) => {
 
@@ -45,13 +65,26 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
         });
     };
 
+	const copyInviteCode = () => {
+		const code = server;
+		navigator.clipboard.writeText(code);
+		toast.success("Invite code copied to clipboard!");
+	}
+
 	return (
 		<>
+			<Toaster />
 			<header className="chat__mainHeader">
-				<p>Chatting with friends!</p>
-				<button className="leaveChat__btn" onClick={handleLeaveChat}>
-					LOG OUT
-				</button>
+				<div className="chat__serverinfo">
+					<h3>{serverName}</h3>
+					<p style={{fontSize: "16px"}}>{serverDescription}</p>
+				</div>
+				<div className="chat__topButtons">
+					<button className="smileyPicker__btn" onClick={copyInviteCode}>SHARE</button>
+					<button className="leaveChat__btn" onClick={handleLeaveChat} style={{marginLeft: "15px"}}>
+						LOG OUT
+					</button>
+				</div>
 			</header>
 			{setVisibleProfile && <ProfileCard username={selectedUsername} isVisible={visibleProfile} toggleVisible={toggleProfileCard}/>}
 			<div className="message__container">

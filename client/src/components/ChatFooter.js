@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { EmojiPicker } from "./EmojiPicker";
 import { GithubPicker } from "react-color";
+import { useParams } from "react-router";
 
 const ColorPicker = ({ onColorSelect }) => {
 	const [color, setColor] = useState("#000000");
@@ -20,6 +21,7 @@ const ChatFooter = ({ socket }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const messageInputRef = useRef(null);
 	const [showColorPicker, setShowColorPicker] = useState(false);
+	const { server } = useParams();
 
 	const toggleEmojiPicker = (e) => {
 		e.preventDefault();
@@ -102,14 +104,13 @@ const ChatFooter = ({ socket }) => {
 		moveCursorBack(7);
 	}
 
-	const handleTyping = () =>
-		socket.emit(
-			"typing",
-			`${localStorage.getItem("userName")} is typing...`,
-		);
-	setTimeout(() => {
-		socket.emit("typing", ``);
-	}, 2000);
+	const handleTyping = () => {
+			const userName = localStorage.getItem("userName");
+			socket.emit("typing", { user: userName, message: `${userName}: ${message}`, server: server });
+		setTimeout(() => {
+			socket.emit("typing", { user: userName, message: "", server: server });
+		}, 2000);
+	}
 
 	const handleSendMessage = (e) => {
 		e.preventDefault();
@@ -118,13 +119,13 @@ const ChatFooter = ({ socket }) => {
 			toggleColorPicker(e);
 		}
 		if (message.trim() && localStorage.getItem("userName")) {
-			console.log(message);
 			socket.emit("message", {
 				text: message,
 				name: localStorage.getItem("userName"),
 				timestamp: new Date(),
 				id: `${socket.id}${Math.random()}`,
-				socketID: socket.id,
+				server: server,
+				socketID: socket.id
 			});
 		}
 		setMessage("");

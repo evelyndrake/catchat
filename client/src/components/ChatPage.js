@@ -3,6 +3,8 @@ import ChatBar from "./ChatBar";
 import ChatBody from "./ChatBody";
 import ChatFooter from "./ChatFooter";
 import useSound from "use-sound";
+import axios from "axios";
+import { useParams } from "react-router";
 // import meowSFX from "../sounds/meow_notif_send.mp3";
 
 const meowSFX = require("../sounds/meow_notif_recieve.mp3");
@@ -14,33 +16,75 @@ const ChatPage = ({ socket }) => {
 	const lastMessageRef = useRef(null);
 	const [meowNotifSend] = useSound(meowSFXSent, { volume: 0.1 });
 	const [meowNotifRecieve] = useSound(meowSFX, { volume: 0.5 });
+	const { server: server } = useParams();
 
 	const fetchChatHistory = async () => {
 		try {
-			const response = await fetch("http://localhost:4000/api/chat/history");
-			const data = await response.json();
-			setMessages(data);
+			axios.get(`http://localhost:4000/api/servers/${server}/history`)
+				.then((response) => {
+					if (response.data.length > 0) {
+						setMessages(response.data);
+					} else {
+						setMessages([]);
+					}
+					
+				});
 		} catch (error) {
-			console.error("Failed to fetch chat history:", error);
+			console.error("Failed to fetch server history:", error);
 		}
 	}
 
 	useEffect(() => {
+		if (server === null) {
+			// Join first server in list
+			axios.get(`http://localhost:4000/api/accounts/${localStorage.getItem("userName")}/servers`)
+				.then((response) => {
+					if (response.data.length > 0) {
+						window.location.replace(`/chat/${response.data[0].server}`);
+					} else {
+						// window.location.replace("/chat");
+					}
+				});
+		}
         fetchChatHistory(); // Load chat history when component mounts
     }, []); // Empty dependency array means this effect runs once on mount
 
+	// Reload chat history when url changes
+	useEffect(() => {
+		fetchChatHistory();
+		console.log(server);
+	}, [server]);
+	
+	// Update server when url changes
+
+
     useEffect(() => {
 		const messageListener = (data) => {
-			setMessages((prevMessages) => [...prevMessages, data]);
-			// Play sound if message is not from current user
-			if (data.socketID !== socket.id) {
-				meowNotifRecieve();
-			} else {
-				meowNotifSend();
+			console.log("messageListener")
+			console.log(server);
+			console.log("data.server")
+			console.log(data.server)
+			if (data.server == server) {
+				setMessages((prevMessages) => [...prevMessages, data]);
+				// Play sound if message is not from current user
+				if (data.socketID !== socket.id) {
+					meowNotifRecieve();
+				} else {
+					meowNotifSend();
+				}
+				console.log(socket);
 			}
-			console.log(socket);
 		};
-        const typingListener = (data) => setTypingStatus(data);
+        const typingListener = (data) => {
+			console.log(server);
+			// Only set typing status if data.server matches
+			if (data.server === server) {
+				setTypingStatus(data.message);
+			} else {
+				setTypingStatus("");
+			}
+
+		};
 
         socket.on("messageResponse", messageListener);
         socket.on("typingResponse", typingListener);
@@ -50,7 +94,7 @@ const ChatPage = ({ socket }) => {
             socket.off("messageResponse", messageListener);
             socket.off("typingResponse", typingListener);
         };
-    }, [socket, meowNotifRecieve, meowNotifSend]);
+    }, [socket, meowNotifRecieve, meowNotifSend, server]);
 
 	useEffect(() => {
 		// 👇️ scroll to bottom every time messages change

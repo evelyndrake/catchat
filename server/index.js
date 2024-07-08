@@ -10,8 +10,11 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require("mongoose");
 const Account = require("./models/accountModel");
 const ChatMessage = require("./models/messageModel");
+const Server = require("./models/serverModel");
 const dotenv = require('dotenv');
 const uuid = require('uuid-by-string');
+// const referralCodes = require('referral-codes');
+// TODO: SECTION THIS UP INTO MULTIPLE FILES 😭😭
 const socketIO = require("socket.io")(http, { // Set up socket.io with CORS
 	cors: {
 		origin: "http://localhost:3000",
@@ -46,6 +49,7 @@ socketIO.on("connection", (socket) => {
 			name: data.name,
 			text: data.text,
 			timestamp: new Date(),
+			server: data.server
 		});
 		message.save();
 		socketIO.emit("messageResponse", data);
@@ -338,6 +342,21 @@ app.get('/api/accounts/:username/pronouns', async (req, res) => {
 }
 );
 
+// Endpoint to get a user's servers
+app.get('/api/accounts/:username/servers', async (req, res) => {
+	const accountUsername = req.params.username;
+	const account = await Account.findOne
+	({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const ids = account.servers;
+	const servers = await Server.find({ code: { $in: ids } });
+	res.json(servers);
+});
+
 const getChatHistory = async () => {
 	const history = await ChatMessage.find().sort('-timestamp').limit(100); // Get the last 100 messages
 	return history.reverse();
@@ -353,6 +372,88 @@ app.get('/api/chat/history', async (req, res) => {
 	}
 });
 
+// SERVER ENDPOINTS
+const getServerChatHistory = async (serverCode) => {
+	const history = await ChatMessage.find({ server: serverCode }).sort('-timestamp').limit(100); // Get the last 100 messages
+	return history.reverse();
+}
+
+app.get('/api/servers/:code/history', async (req, res) => {
+	const serverCode = req.params.code;
+	try {
+		const history = await getServerChatHistory(serverCode);
+		res.json(history);
+	} catch (error) {
+		console.error('Failed to get chat history:', error);
+		res.status(500).send('Internal Server Error');
+	}
+});
+
+const generateServerCode = () => {
+	return Math.random().toString(36).substring(2, 8);
+};
+
+app.get('/api/servers', async (req, res) => {
+	const servers = await Server.find();
+	res.json(servers);
+});
+
+app.post('/api/servers', async (req, res) => {
+	const server = new Server({
+		displayName: req.body.displayName,
+		code: generateServerCode(),
+		description: req.body.description,
+	});
+	await server.save();
+	res.json(server);
+});
+
+// Endpoint to get a server by id
+app.get('/api/servers/:code', async (req, res) => {
+	const serverCode = req.params.code;
+	const server = await Server.findOne
+	({ code: serverCode });
+	if (!server) {
+		return res.status(404).json({
+			message: "Server not found",
+		});
+	}
+	res.json(server);
+});
+
+// Endpoint to have a user join a server
+app.post('/api/servers/:code/join', async (req, res) => {
+	const serverCode = req.params.code;
+	const accountUsername = req.body.username;
+	const account = await Account.findOne({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const server = await Server.findOne({ code: serverCode });
+	if (!server) {
+		return res.status(404).json({
+			message: "Server not found",
+		});
+	}
+	if (account.servers.includes(serverCode)) {
+		return res.status(400).json({
+			message: "Already in server",
+		});
+	}
+	account.servers.push(serverCode);
+	await account.save();
+	res.json(account.servers);
+});
+
+// Endpoint to get all usernames of all members in a server
+app.get('/api/servers/:code/members', async (req, res) => {
+	const serverCode = req.params.code;
+	const accounts = await Account.find({ servers: serverCode });
+	const usernames = accounts.map(account => account.username);
+	res.json(usernames);
+});
 
 http.listen(PORT, () => {
 	console.log(`Server listening on ${PORT}`);

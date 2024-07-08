@@ -7,6 +7,7 @@ const accountSchema = new mongoose.Schema({
   badges: { type: Array, default: [] },
   bio: { type: String, default: '' },
   pronouns : { type: String, default: 'unset' },
+  servers: { type: Array, default: [] }
 });
 
 const Account = mongoose.model('Account', accountSchema);

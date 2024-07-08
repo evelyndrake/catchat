@@ -20,7 +20,9 @@ const Home = ({ socket }) => {
             // localStorage.setItem("authToken", token); // Store the token
             localStorage.setItem("userName", userName); // Store the userName
             socket.emit("newUser", { userName, socketID: socket.id });
-            navigate("/chat");
+			// Try to get the user's server list
+			const serverResponse = await axios.get(`http://localhost:4000/api/accounts/${userName}/servers`);
+            navigate(`/chat/${serverResponse.data[0].code}`);
         } catch (error) {
             // Handle login errors (e.g., invalid credentials)
 			const errorMessage = error.response ? error.response.data.message : "Login failed";
@@ -36,7 +38,9 @@ const Home = ({ socket }) => {
 			});
 			localStorage.setItem("userName", userName);
 			socket.emit("newUser", { userName, socketID: socket.id });
-			navigate("/chat");
+			// Join 9ypdn3
+			await axios.post(`http://localhost:4000/api/servers/9ypdn3/join`, { username: userName });
+			navigate("/chat/9ypdn3");
 		} catch (error) {
 			const errorMessage = error.response ? error.response.data.message : "Signup failed";
 			setLoginError(errorMessage);

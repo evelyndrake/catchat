@@ -8,13 +8,11 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
     const [profilePronouns, setProfilePronouns] = useState("");
     const cardRef = useRef(null);
 
-    
-
     const fetchProfileBadges = async () => {
 		try {
 			const response = await axios.get(`http://localhost:4000/api/accounts/${username}/badges`);
 			const data = await response.data;
-			setProfileBadges(data);
+			setProfileBadges(data); 
 		} catch (error) {
 			console.error("Failed to fetch profile badges:", error);
 		}
@@ -58,7 +56,6 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [toggleVisible]);
 
-    // TODO: Don't save changes until a save button is pressed, which also shows a toast on press
     return isVisible ? (
         <div className="profile-card" ref={cardRef}>
             
