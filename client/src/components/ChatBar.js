@@ -11,6 +11,7 @@ const ChatBar = ({ socket }) => {
 	const { server } = useParams();
 	const [currentServer , setCurrentServer] = useState("");
 	const [userList, setUserList] = useState([]);
+	const catGif = require("../img/cat.gif");
 	useEffect(() => {
 		socket.on("newUserResponse", (data) => setUsers(data));
 	}, [socket, users]);
@@ -47,7 +48,11 @@ const ChatBar = ({ socket }) => {
 	return (
 		<div className="chat__sidebar">
 			<Toaster />
-			<h2>KittyChato</h2>
+			<div className="logo">
+				<h2>KittyChat</h2>
+				<img src={catGif} alt="cat" style={{ marginLeft: "10px", width: "48px", height: "auto", imageRendering: "pixelated", transform: "scaleX(-1)" }} />
+			</div>
+			
 			<div>
 			<h4 className="chat__header">NAVIGATION</h4>
                 <div className="chat__navigation">

@@ -48,8 +48,8 @@ h3 {
 }
 
 h2 {
-  font-family: 'Quiet Meows';
-  font-size: 34px;
+  /* font-family: 'Quiet Meows'; */
+  font-size: 30px;
   color: var(--text-primary);
 }
 
@@ -493,7 +493,13 @@ label {
   color: white;
 }
 
-
+.logo {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* vertically align to bottom */
+  align-items: flex-end;
+}
 
 .message__yourname {
   text-align: right !important;
