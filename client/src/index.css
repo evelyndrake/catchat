@@ -48,7 +48,7 @@ h3 {
 }
 
 h2 {
-  /* font-family: 'Quiet Meows'; */
+  font-family: 'Quiet Meows';
   font-size: 30px;
   color: var(--text-primary);
 }
@@ -110,6 +110,7 @@ label {
   height: 100vh;
   display: flex;
   align-items: center;
+  overflow: auto !important;
 }
 .chat__sidebar {
   height: 100%;
@@ -117,19 +118,25 @@ label {
   flex: 0.2;
   padding: 20px;
   /* border-right: 1px solid #fdfdfd; */
+  overflow: auto;
   
 }
 @media (max-width: 768px) {
   .chat__sidebar {
-    display: none;
+    /* display: none; */
   }
   .chat__main {
     flex: 1.0 !important;
   }
 }
 .chat__main {
+  overflow: auto;
+  display: flex;
+  flex-flow: column;
   height: 100%;
   flex: 0.8;
+  /* flex-shrink: 1; */
+  /* align-items: ; */
   background-color: var(--background-primary);
 }
 .chat__header {
@@ -152,7 +159,7 @@ label {
 }
 .chat__mainHeader {
   width: 100%;
-  height: 8vh;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -186,9 +193,11 @@ label {
 }
 .message__container {
   width: 100%;
-  height: 80vh;
+  max-height: calc(90vh - 125px);
+  flex: 1 1 auto;
   background-color: var(--background-secondary);
   padding: 20px;
+  /* padding-bottom: 20px; */
   overflow-y: scroll;
 }
 
@@ -197,10 +206,16 @@ label {
 }
 .chat__footer {
   padding: 10px;
+  flex: 0 1 40px;
+  height: auto;
   background-color: var(--background-primary);
-  height: 8vh;
+  height: 10vh;
+  vertical-align: bottom;
+  /* display: inline; */
+  /* overflow-y: auto; */
   /* margin-bottom: 10[px] */
   /* overflow: hidden; */
+  
 }
 .form {
   width: 100%;
@@ -368,12 +383,21 @@ label {
   transform: scale(2); /* Increase scale on hover */
 }
 
+.buttons-footer-container {
+  display: flex;
+  align-items: center;
+  /* margin-top: 10px; */
+}
+
 .formatting-btn {
   cursor: pointer;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   margin-right: 4px;
-  font-size: 16px;
+  font-size: 14px;
   padding: 6px;
+  /* max-height: 20px;
+  min-height: 16px; */
+  height: 30px;
 }
 
 /* rainbow text */

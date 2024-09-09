@@ -132,24 +132,26 @@ const ChatFooter = ({ socket }) => {
 	};
 	return (
 		<div className="chat__footer">
-			<button className="formatting-btn" onClick={handleBoldClick}>
-				<strong>B</strong>
-			</button>
-			<button className="formatting-btn" onClick={handleItalicClick}>
-				<i>i</i>
-			</button>
-			<button className="formatting-btn" onClick={handleStrikethroughClick}>
-				<del>s</del>
-			</button>
-			<button className="formatting-btn" onClick={handleColorClick}>
-				🎨
-			</button>
-			<button className="formatting-btn" onClick={handleRainbowClick}>
-				🌈
-			</button>
-			<button className="formatting-btn" onClick={toggleEmojiPicker}>
-				😀
-			</button>
+			<div className="buttons-footer-container">
+				<button className="formatting-btn" onClick={handleBoldClick}>
+					<strong>B</strong>
+				</button>
+				<button className="formatting-btn" onClick={handleItalicClick}>
+					<i>i</i>
+				</button>
+				<button className="formatting-btn" onClick={handleStrikethroughClick}>
+					<del>s</del>
+				</button>
+				<button className="formatting-btn" onClick={handleColorClick}>
+					🎨
+				</button>
+				<button className="formatting-btn" onClick={handleRainbowClick}>
+					🌈
+				</button>
+				<button className="formatting-btn" onClick={toggleEmojiPicker}>
+					😀
+				</button>
+			</div>
 			<form className="form" onSubmit={handleSendMessage} id="message-footer">
 				<input
 					type="text"

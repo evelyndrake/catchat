@@ -49,8 +49,8 @@ const ChatBar = ({ socket }) => {
 		<div className="chat__sidebar">
 			<Toaster />
 			<div className="logo">
-				<h2>KittyChat</h2>
-				<img src={catGif} alt="cat" style={{ marginLeft: "10px", width: "48px", height: "auto", imageRendering: "pixelated", transform: "scaleX(-1)" }} />
+				<h2>KittyChato</h2>
+				{/* <img src={catGif} alt="cat" style={{ marginLeft: "10px", width: "48px", height: "auto", imageRendering: "pixelated", transform: "scaleX(-1)" }} /> */}
 			</div>
 			
 			<div>
