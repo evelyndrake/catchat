@@ -255,7 +255,7 @@ const ProfilePage = ({ socket }) => {
 				</div>
 			</div>
 		</div>
-	); // TODO: Add a profile viewing page and make the usernames links to view a user's profile
+	);
 };
 
 export default ProfilePage;

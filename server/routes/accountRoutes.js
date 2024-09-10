@@ -2,6 +2,44 @@ const express = require('express');
 const router = express.Router();
 const Account = require('../models/accountModel');
 const Server = require('../models/serverModel'); // Import the Server model
+const uuid = require('uuid-by-string');
+
+// TODO: We should just have a single endpoint to GET an entire account object,
+// not separate endpoints for each field (bio, pronouns, etc.) Same for the
+// other endpoints and POST/PATCH/DELETE requests Endpoint to return the badges
+// array of a user
+
+// Endpoint to login given a username and password, checking against the UUID
+router.post("/api/accounts/login", async (req, res) => {
+	// Request contains fields: username, password. Convert these to strings
+	const accountUsername = typeof req.body.username === 'string' ? req.body.username : '';
+	const password = typeof req.body.password === 'string' ? req.body.password : '';
+	if (!accountUsername || !password) {
+		return res.status(400).json({
+			message: "Username and password are required",
+		});
+	}
+	const accountID = uuid(accountUsername+password)
+	const account = await Account.findOne({ username: accountUsername, UUID: accountID });
+	if (account) {
+		res.json({
+			message: "Login successful",
+			account: account,
+		});
+	} else {
+		// Check if there is an account with the same name
+		const existingAccount = await Account.findOne({ username:
+			accountUsername });
+		if (existingAccount) {
+			return res.status(400).json({
+				message: "Password is incorrect",
+			});
+		}
+		res.status(400).json({
+			message: "Account does not exist",
+		});
+	}
+});
 
 // Endpoint to return the badges array of a user
 router.get("/api/accounts/:username/badges", async(req, res) => {
