@@ -27,8 +27,8 @@ const CreateServerPage = ({socket}) => {
             <Toaster />
             <ChatBar socket={socket} />
             
-            <div className="chat__main">
-                <header className="chat__mainHeader">
+            <div className="chat-main">
+                <header className="chat-mainHeader">
                     <p>User settings!</p>
                 </header>
                 <h3 style={{marginBottom: '5px'}}>Dark Mode</h3>

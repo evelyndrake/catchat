@@ -74,44 +74,44 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 	return (
 		<>
 			<Toaster />
-			<header className="chat__mainHeader">
-				<div className="chat__serverinfo">
+			<header className="chat-mainHeader">
+				<div className="chat-serverinfo">
 					<h3>{serverName}</h3>
 					<p style={{fontSize: "16px"}}>{serverDescription}</p>
 				</div>
-				<div className="chat__topButtons">
-					<button className="smileyPicker__btn" onClick={copyInviteCode}>SHARE</button>
-					<button className="leaveChat__btn" onClick={handleLeaveChat} style={{marginLeft: "15px"}}>
+				<div className="chat-topButtons">
+					<button className="smileyPicker-btn" onClick={copyInviteCode}>SHARE</button>
+					<button className="leaveChat-btn" onClick={handleLeaveChat} style={{marginLeft: "15px"}}>
 						LOG OUT
 					</button>
 				</div>
 			</header>
 			{setVisibleProfile && <ProfileCard username={selectedUsername} isVisible={visibleProfile} toggleVisible={toggleProfileCard}/>}
-			<div className="message__container">
+			<div className="message-container" >
 				
                 {messages.map((message) =>
                     message.name === localStorage.getItem("userName") ? (
-                        <div className="message__chats" style={{textAlign: 'right'}}key={message.id}>
-							<a className="message__yourname" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
+                        <div className="message-chats" title={new Date(message.timestamp).toLocaleString()} style={{textAlign: 'right'}}key={message.id}>
+							<a className="message-yourname" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
 								You
 							</a>
-							<p className="message__timestamp">{new Date(message.timestamp).toLocaleTimeString()}</p>
-                            <div className="message__sender" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
+							<p className="message-timestamp"> {new Date(message.timestamp).toLocaleTimeString()}</p>
+                            <div className="message-sender" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
                         </div>
                     ) : (
-                        <div className="message__chats" key={message.id}>
-							<a className="message__username" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
+                        <div className="message-chats" title={new Date(message.timestamp).toLocaleString()} key={message.id}>
+							<a className="message-username" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
 								{message.name}
 							</a>
-							<p className="message__timestamp" style={{textAlign: "left"}}>{new Date(message.timestamp).toLocaleTimeString()}</p>
-                            <div className="message__recipient" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
+							<p className="message-timestamp" style={{textAlign: "left"}}>{new Date(message.timestamp).toLocaleTimeString()}</p>
+                            <div className="message-recipient" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
 							
                         </div>
 						
                     ),
                 )}
 
-				<div className="message__status">
+				<div className="message-status">
 					<p>{typingStatus}</p>
 				</div>
 

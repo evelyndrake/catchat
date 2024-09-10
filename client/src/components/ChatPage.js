@@ -104,7 +104,7 @@ const ChatPage = ({ socket }) => {
 	return (
 		<div className="chat">
 			<ChatBar socket={socket} />
-			<div className="chat__main">
+			<div className="chat-main">
 				<ChatBody
 					messages={messages}
 					lastMessageRef={lastMessageRef}

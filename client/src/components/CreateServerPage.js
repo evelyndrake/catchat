@@ -35,8 +35,8 @@ const CreateServerPage = ({socket}) => {
 			<Toaster />
 			<ChatBar socket={socket} />
 			
-			<div className="chat__main">
-				<header className="chat__mainHeader">
+			<div className="chat-main">
+				<header className="chat-mainHeader">
 					<p>Create a server!</p>
 				</header>
 				<h3 style={{marginBottom: '5px'}}>Name</h3>
@@ -44,7 +44,7 @@ const CreateServerPage = ({socket}) => {
 				<h3 style={{marginBottom: '5px', marginTop: '10px'}}>Description</h3>
 				<input type="text" placeholder="Server Description" value={serverDescription} onChange={(e) => setServerDescription(e.target.value)} />
 				<div className="profileButtons-container">
-					<button onClick={createServer} className="sendBtn" style={{marginTop: '20px'}}>Create!</button>
+					<button onClick={createServer} className="send-btn" style={{marginTop: '20px'}}>Create!</button>
 				</div>
 			</div>
 		</div>

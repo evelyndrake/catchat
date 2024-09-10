@@ -131,7 +131,7 @@ const ChatFooter = ({ socket }) => {
 		setMessage("");
 	};
 	return (
-		<div className="chat__footer">
+		<div className="chat-footer">
 			<div className="buttons-footer-container">
 				<button className="formatting-btn" onClick={handleBoldClick}>
 					<strong>B</strong>
@@ -164,8 +164,8 @@ const ChatFooter = ({ socket }) => {
 				/>
 				{showEmojiPicker && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
 				<div className="buttons-container">
-					<button type="submit" className="sendBtn">SEND</button>
-					{/* <button className="smileyPicker__btn" onClick={toggleEmojiPicker}>
+					<button type="submit" className="send-btn">SEND</button>
+					{/* <button className="smileyPicker-btn" onClick={toggleEmojiPicker}>
 						{showEmojiPicker ? 'HIDE SMILEYS' : 'SHOW SMILEYS'}
 					</button> */}
 				</div>

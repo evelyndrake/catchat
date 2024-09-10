@@ -46,16 +46,16 @@ const ChatBar = ({ socket }) => {
 	}
 
 	return (
-		<div className="chat__sidebar">
+		<div className="chat-sidebar">
 			<Toaster />
 			<div className="logo">
-				<h2>KittyChato</h2>
+				<h2>KittyChat</h2>
 				{/* <img src={catGif} alt="cat" style={{ marginLeft: "10px", width: "48px", height: "auto", imageRendering: "pixelated", transform: "scaleX(-1)" }} /> */}
 			</div>
 			
 			<div>
-			<h4 className="chat__header">NAVIGATION</h4>
-                <div className="chat__navigation">
+			<h4 className="chat-header">NAVIGATION</h4>
+                <div className="chat-navigation">
                     {/* <Link to="/">Home</Link>  */}
 					<ul>
 						{/* <li>
@@ -69,24 +69,24 @@ const ChatBar = ({ socket }) => {
 						</li>
 					</ul>
                 </div>
-				{/* <h4 className="chat__header">ACTIVE USERS</h4>
-				<div className="chat__users">
+				{/* <h4 className="chat-header">ACTIVE USERS</h4>
+				<div className="chat-users">
 					{users.map((user) => (
 						<p key={user.socketID}>{user.userName}</p>
 					))}
 				</div> */}
 				{ userList.length > 0 && (
 					<>
-						<h4 className="chat__header">MEMBERS</h4>
-						<div className="chat__navigation">
+						<h4 className="chat-header">MEMBERS</h4>
+						<div className="chat-navigation">
 							{userList.map((user) => (
 								<p key={user.socketID}>{user}</p>
 							))}
 						</div>
 					</>
 				)}
-				<h4 className="chat__header">SERVERS</h4>
-				<div className="chat__navigation">
+				<h4 className="chat-header">SERVERS</h4>
+				<div className="chat-navigation">
 					<ul>
 						{servers.map((server) => (
 							<li key={server.id}>
@@ -97,30 +97,35 @@ const ChatBar = ({ socket }) => {
 				</div>
 				<br />
 				<p>Join a server:</p>
-				<input
-					type="text"
-					value={inputServerID}
-					onChange={(e) => setInputServerID(e.target.value)}
-					placeholder="Server Code"
-					style={{marginTop: "5px", marginLeft: "10px", marginBottom: "15px"}}
-				/>
-				<button
-					onClick={async () => {
-						try {
-							await axios.post(`http://localhost:4000/api/servers/${inputServerID}/join`, {
-								username: localStorage.getItem("userName"),
-							});
-							await fetchServers();
-							toast.success("Successfully joined server!");
-						} catch (error) {
-							toast.error("Failed to join server", { icon: "❌" });
-						}
-						setInputServerID("");
-					}}
-				>
-					Join
-				</button>
-				<Link to="/create-server">Create a server</Link>
+				<div class="server-sidebar">
+					<input
+						type="text"
+						value={inputServerID}
+						onChange={(e) => setInputServerID(e.target.value)}
+						placeholder="Server Code"
+						style={{marginTop: "10px"}}
+					/>
+					<button
+						style={{marginTop: "5px"}}
+						onClick={async () => {
+							try {
+								await axios.post(`http://localhost:4000/api/servers/${inputServerID}/join`, {
+									username: localStorage.getItem("userName"),
+								});
+								await fetchServers();
+								toast.success("Successfully joined server!");
+							} catch (error) {
+								toast.error("Failed to join server", { icon: "❌" });
+							}
+							setInputServerID("");
+						}}
+					>
+						Join
+					</button>
+					<Link 
+					style={{marginTop: "5px"}}
+					to="/create-server">Create a server</Link>
+				</div>
 			</div>
 		</div>
 	);

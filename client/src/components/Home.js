@@ -52,14 +52,14 @@ const Home = ({ socket }) => {
 		<>
 		<Toaster />
 		{!inSignup && (
-			<form className="home__container" onSubmit={handleSubmit}>
-				<h2 className="home__header">Sign in to KittyChato</h2>
+			<form className="home-container" onSubmit={handleSubmit}>
+				<h2 className="home-header">Sign in to KittyChato</h2>
 				<label htmlFor="username">Username</label>
 				<input
 					type="text"
 					name="username"
 					id="username"
-					className="username__input"
+					className="username-input"
 					value={userName}
 					onChange={(e) => setUserName(e.target.value)}
 				/>
@@ -68,26 +68,26 @@ const Home = ({ socket }) => {
 					type="password"
 					name="password"
 					id="password"
-					className="password__input"
+					className="password-input"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<br />
-				<button className="home__cta">SIGN IN</button>
+				<button className="home-cta">SIGN IN</button>
 				<br />
 				<p>Need an account? <a href="#" onClick={() => setInSignup(true)}>Sign up here!</a></p>
 			</form>
 		)}
 		{
 			inSignup && (
-				<form className="home__container" onSubmit={handleSubmitSignup}>
-					<h2 className="home__header">Sign up for KittyChato</h2>
+				<form className="home-container" onSubmit={handleSubmitSignup}>
+					<h2 className="home-header">Sign up for KittyChato</h2>
 					<label htmlFor="username">Username</label>
 					<input
 						type="text"
 						name="username"
 						id="username"
-						className="username__input"
+						className="username-input"
 						value={userName}
 						onChange={(e) => setUserName(e.target.value)}
 					/>
@@ -96,12 +96,12 @@ const Home = ({ socket }) => {
 						type="password"
 						name="password"
 						id="password"
-						className="password__input"
+						className="password-input"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 					/>
 					<br />
-					<button className="home__cta">SIGN UP</button>
+					<button className="home-cta">SIGN UP</button>
 					<br />
 					<p>Have an account? <a href="#" onClick={() => setInSignup(false)}>Sign in here!</a></p>
 				</form>

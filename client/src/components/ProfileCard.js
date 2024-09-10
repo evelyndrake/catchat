@@ -60,22 +60,22 @@ const ProfileCard = ({username, isVisible, toggleVisible}) => {
         <div className="profile-card" ref={cardRef}>
             
             {/* close button */}
-            <button className="profile-card__close" onClick={toggleVisible}>
+            <button className="profile-card-close" onClick={toggleVisible}>
                 <strong>X</strong>
             </button>
 
-            <div className="profile-card__name">
-                <h3 className="profile-card__text">{username}</h3>  
-                {profilePronouns !== 'unset' && <i className="profile-card__text">({profilePronouns})</i>}
+            <div className="profile-card-name">
+                <h3 className="profile-card-text">{username}</h3>  
+                {profilePronouns !== 'unset' && <i className="profile-card-text">({profilePronouns})</i>}
             </div>
             
-            <div className="profile-card__bio">
-                <p className="profile-card__text">{profileBio}</p>
+            <div className="profile-card-bio">
+                <p className="profile-card-text">{profileBio}</p>
             </div>
 
             
             {/* <br /> */}
-            <div className="profile-card__badges">
+            <div className="profile-card-badges">
                 {profileBadges.map((badge, index) => (
                     <div key={index} className="badge">
                         {/* <p>{badge}</p> */}

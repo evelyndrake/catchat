@@ -175,8 +175,8 @@ const ProfilePage = ({ socket }) => {
 			<Toaster />
 			<ChatBar socket={socket} />
 			
-			<div className="chat__main">
-				<header className="chat__mainHeader">
+			<div className="chat-main">
+				<header className="chat-mainHeader">
 					<p>Customizing your profile!</p>
 				</header>
 				
@@ -195,7 +195,7 @@ const ProfilePage = ({ socket }) => {
 					onChange={(e) => setPronouns(e.target.value)}
 				/>
                 <h3 style={{marginTop: '10px', marginBottom: '5px'}}>Your badges:</h3>
-				<div className="chat__badges">
+				<div className="chat-badges">
 					{profileBadges.map((badge, index) => (
 						<div key={index} className="badge" onClick={() => removeBadgeFromProfile(badge)}>
 							{/* <p>{badge}</p> */}
@@ -212,7 +212,7 @@ const ProfilePage = ({ socket }) => {
 				/>
 				{searchTerm === '' && (
 					<div>
-						<div className="chat__badges">
+						<div className="chat-badges">
 							{currentBadges.map((badge, index) => (
 								<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
 									{/* <p>{badge}</p> */}
@@ -225,7 +225,7 @@ const ProfilePage = ({ socket }) => {
 								<button
 									key={number}
 									onClick={() => paginate(number)}
-									className={currentPage === number ? 'selectedPage' : 'page'}
+									className={currentPage === number ? 'selected-page' : 'page'}
 								>
 									{number}
 								</button>
@@ -239,7 +239,7 @@ const ProfilePage = ({ socket }) => {
 						{isLoading && (
 							<img src={loadingGif} alt="Loading..." style={{width: '50px', height: '50px', marginTop: '5px', marginBottom: '5px'}} />
 						)}
-						<div className="chat__badges">
+						<div className="chat-badges">
 							{searchResults.map((badge, index) => (
 								<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
 									{/* <p>{badge}</p> */}
@@ -250,8 +250,8 @@ const ProfilePage = ({ socket }) => {
 					</div>
 				)}
 				<div className="profileButtons-container">
-					<button onClick={toggleProfileCard} className="smileyPicker__btn">Preview</button>
-					<button onClick={saveChanges} className="sendBtn" style={{marginLeft: '10px'}}>Save</button>
+					<button onClick={toggleProfileCard} className="smileyPicker-btn">Preview</button>
+					<button onClick={saveChanges} className="send-btn" style={{marginLeft: '10px'}}>Save</button>
 				</div>
 			</div>
 		</div>
