@@ -14,6 +14,8 @@
 
 :root {
   /* --background-primary-gradient: linear-gradient(to bottom, #f9f5eb 50%, #ffceef); */
+  --message-sender: rgb(255, 187, 187);
+  --message-recipient: rgb(194, 243, 194);
   --background-primary-gradient: #f9f5eb;
   --background-primary: #f9f5eb;
   --background-secondary: white;
@@ -27,6 +29,8 @@
 
 .dark-mode {
   /* --background-primary-gradient: linear-gradient(to bottom, #272121 50%, #581842); */
+  --message-sender: #3a3a3a;
+  --message-recipient: #3a3a3a;
   --background-primary-gradient: #272121;
   --background-primary: #272121;
   --background-secondary: #3a3a3a;
@@ -94,6 +98,11 @@ p {
   font-size: 18px;
 }
 
+.username-input, .password-input, input, textarea {
+  background-color: var(--background-secondary);
+  border-color: var(--background-primary);
+  color: var(--text-primary)
+}
 label {
   color: var(--text-primary);
 }
@@ -108,8 +117,8 @@ label {
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #607eaa;
-  color: var(--text-primary);
+  background-color: var(--link-unvisited);
+  color: white;
   outline: none;
   border: none;
   border-radius: 5px;
@@ -184,7 +193,8 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  /* padding: 20px;  */
+  /* margin-bottom: 10px; */
   background: var(--background-primary);
   color: var(--text-primary);
   font-size: 20px;
@@ -341,20 +351,22 @@ label {
 
 .message-recipient {
   /* animation: fadeIn 0.5s ease-out; */
-  background-color: #f5ccc2;
+  background-color: var(--message-recipient);
   width: 300px;
   padding: 10px;
   border-radius: 10px;
   font-size: 16px;
+  color: var(--text-primary)
 }
 .message-sender {
   /* animation: fadeIn 0.5s ease-out; */
-  background-color: rgb(194, 243, 194);
+  background-color: var(--message-sender);
   max-width: 300px;
   padding: 10px;
   border-radius: 10px;
   margin-left: auto;
   font-size: 16px;
+  color: var(--text-primary);
 }
 .message-recipient:hover, .message-sender:hover {
   animation: shake 0.3s ease-in-out;
@@ -450,8 +462,7 @@ label {
   flex-wrap: wrap;
   max-width: 800px;
   max-height: 400px;
-  overflow-y: auto;
-  
+  /* overflow-y: auto; */
 }
 
 .badge {
@@ -487,14 +498,16 @@ label {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: var(--background-primary);
+
   /* 90% opacity */
   opacity: 0.9;
   /* Full screen width and height */
   width: 50vw;
   max-height: 33vh;
   padding: 15px;
-  color: #fff;
+  color: var(--text-primary);
   animation: fadeIn3 0.5s ease-out;
   overflow-y: auto;
 
@@ -525,6 +538,7 @@ label {
   overflow-y: auto;
   overflow-wrap: break-word;
   word-break: break-all;
+  color: var(--text-primary)
 }
 
 .profile-card-close {
@@ -533,15 +547,22 @@ label {
   right: 15px;
   cursor: pointer;
   font-size: 16px;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 0;
 }
 
 .profile-card-text {
-  color: white;
+  color: var(--text-primary)
 }
 
 .logo {
   display: flex;
-  /* justify-content: space-between; */
+  font-size: 50%;
+  /* ju-stify-content: space-between; */
   align-items: center;
   /* vertically align to bottom */
   align-items: flex-end;
@@ -578,4 +599,10 @@ label {
   display: flex;
   justify-content: space-between;
 
+}
+
+.chat-bio {
+  max-width: 800px;
+  height: 24px;
+  font-size: 24;
 }

@@ -183,14 +183,14 @@ const ProfilePage = ({ socket }) => {
 				<ProfileCard username={localStorage.getItem("userName")} isVisible={visibleProfile} toggleVisible={toggleProfileCard} />
 				<h3 style={{marginBottom: '5px'}}>Your bio:</h3>
 				<textarea
-					className="chat__bio"
+					className="chat-bio"
 					value={bio}
 					onChange={(e) => setBio(e.target.value)}
 				/>
 				{/* <button onClick={() => updateBio(bio)}>Update bio</button> */}
 				<h3 style={{marginTop: '10px', marginBottom: '5px'}}>Your pronouns:</h3>
 				<input
-					className="chat__bio"
+					className="chat-bio"
 					value={pronouns}
 					onChange={(e) => setPronouns(e.target.value)}
 				/>
@@ -205,13 +205,14 @@ const ProfilePage = ({ socket }) => {
 				</div>
 				<h3 style={{marginTop: '5px', marginBottom: '5px'}}>All badges:</h3>
 				<input
+					className="chat-bio"
 					type="text"
 					placeholder="Search badges..."
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 				/>
 				{searchTerm === '' && (
-					<div>
+					<div style={{marginTop: "10px"}}>
 						<div className="chat-badges">
 							{currentBadges.map((badge, index) => (
 								<div key={index} className="badge" onClick={() => addBadgeToProfile(badge)}>
