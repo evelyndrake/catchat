@@ -93,7 +93,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                     message.name === localStorage.getItem("userName") ? (
                         <div className="message-chats" title={new Date(message.timestamp).toLocaleString()} style={{textAlign: 'right'}}key={message.id}>
 							<a className="message-yourname" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
-								You
+								<b>You</b>
 							</a>
 							<p className="message-timestamp"> {new Date(message.timestamp).toLocaleTimeString()}</p>
                             <div className="message-sender" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
@@ -101,7 +101,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                     ) : (
                         <div className="message-chats" title={new Date(message.timestamp).toLocaleString()} key={message.id}>
 							<a className="message-username" onClick={() => toggleProfileCard(message.name)} style={{cursor: 'pointer'}}>
-								{message.name}
+								<b>{message.name}</b>
 							</a>
 							<p className="message-timestamp" style={{textAlign: "left"}}>{new Date(message.timestamp).toLocaleTimeString()}</p>
                             <div className="message-recipient" dangerouslySetInnerHTML={{ __html: renderMessageWithSmilies(message.text) }} />
