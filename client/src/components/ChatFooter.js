@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { EmojiPicker } from "./EmojiPicker";
 import { GithubPicker } from "react-color";
 import { useParams } from "react-router";
@@ -38,6 +38,22 @@ const ChatFooter = ({ socket }) => {
 		setMessage(message + emoji);
 		console.log(emoji);
 	}
+
+	const handleKeyDown = (e) => {
+		if (e.key === "Escape") {
+			setShowEmojiPicker(false);
+		}
+	}
+
+	useEffect(() => {
+        // Add event listener for keydown
+        document.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, []);
 
 	const moveCursorBack = (spacesBack) => {
 		setTimeout(() => {
@@ -166,7 +182,7 @@ const ChatFooter = ({ socket }) => {
 					{showEmojiPicker && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
 					<div className="buttons-container">
 						<button type="submit" className="send-btn">SEND</button>
-						{/* <button className="smileyPicker-btn" onClick={toggleEmojiPicker}>
+						{/* <button className="yPicker-btn" onClick={toggleEmojiPicker}>
 							{showEmojiPicker ? 'HIDE SMILEYS' : 'SHOW SMILEYS'}
 						</button> */}
 					</div>
