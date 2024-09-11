@@ -28,9 +28,12 @@ const CreateServerPage = ({socket}) => {
             <ChatBar socket={socket} />
             
             <div className="chat-main">
-                <header className="chat-mainHeader">
-                    <p>User settings!</p>
-                </header>
+            <header className="chat-mainHeader">
+					<div className="chat-serverinfo">
+						<h3>Settings</h3>
+						<p className="subtitle">Adjust your settings</p>
+					</div>
+				</header>
                 <h3 style={{marginBottom: '5px'}}>Dark Mode</h3>
                 <input
                     type="checkbox"

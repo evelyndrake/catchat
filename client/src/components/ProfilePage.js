@@ -177,7 +177,10 @@ const ProfilePage = ({ socket }) => {
 			
 			<div className="chat-main">
 				<header className="chat-mainHeader">
-					<p>Customizing your profile!</p>
+					<div className="chat-serverinfo">
+						<h3>{localStorage.getItem("userName")}</h3>
+						<p className="subtitle">Modify your profile</p>
+					</div>
 				</header>
 				
 				<ProfileCard username={localStorage.getItem("userName")} isVisible={visibleProfile} toggleVisible={toggleProfileCard} />

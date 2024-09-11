@@ -37,7 +37,10 @@ const CreateServerPage = ({socket}) => {
 			
 			<div className="chat-main">
 				<header className="chat-mainHeader">
-					<p>Create a server!</p>
+					<div className="chat-serverinfo">
+						<h3>Create a server</h3>
+						<p className="subtitle">Set up your chatroom</p>
+					</div>
 				</header>
 				<h3 style={{marginBottom: '5px'}}>Name</h3>
 				<input type="text" placeholder="Server Name" value={serverName} onChange={(e) => setServerName(e.target.value)} />

@@ -131,46 +131,48 @@ const ChatFooter = ({ socket }) => {
 		setMessage("");
 	};
 	return (
-		<div className="chat-footer">
-			<div className="buttons-footer-container">
-				<button className="formatting-btn" onClick={handleBoldClick}>
-					<strong>B</strong>
-				</button>
-				<button className="formatting-btn" onClick={handleItalicClick}>
-					<i>i</i>
-				</button>
-				<button className="formatting-btn" onClick={handleStrikethroughClick}>
-					<del>s</del>
-				</button>
-				<button className="formatting-btn" onClick={handleColorClick}>
-					🎨
-				</button>
-				<button className="formatting-btn" onClick={handleRainbowClick}>
-					🌈
-				</button>
-				<button className="formatting-btn" onClick={toggleEmojiPicker}>
-					😀
-				</button>
-			</div>
-			<form className="form" onSubmit={handleSendMessage} id="message-footer">
-				<input
-					type="text"
-					placeholder="Write message"
-					className="message"
-					value={message}
-					onChange={(e) => setMessage(e.target.value)}
-					onKeyDown={handleTyping}
-					ref={messageInputRef}
-				/>
-				{showEmojiPicker && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
-				<div className="buttons-container">
-					<button type="submit" className="send-btn">SEND</button>
-					{/* <button className="smileyPicker-btn" onClick={toggleEmojiPicker}>
-						{showEmojiPicker ? 'HIDE SMILEYS' : 'SHOW SMILEYS'}
-					</button> */}
+		<div className="footer-collection">
+			<div className="chat-footer">
+				<div className="buttons-footer-container">
+					<button className="formatting-btn" onClick={handleBoldClick}>
+						<strong>B</strong>
+					</button>
+					<button className="formatting-btn" onClick={handleItalicClick}>
+						<i>i</i>
+					</button>
+					<button className="formatting-btn" onClick={handleStrikethroughClick}>
+						<del>s</del>
+					</button>
+					<button className="formatting-btn" onClick={handleColorClick}>
+						🎨
+					</button>
+					<button className="formatting-btn" onClick={handleRainbowClick}>
+						🌈
+					</button>
+					<button className="formatting-btn" onClick={toggleEmojiPicker}>
+						😀
+					</button>
 				</div>
-				{showColorPicker && <ColorPicker onColorSelect={handleColorSelect}/>}
-			</form>
+				<form className="form" onSubmit={handleSendMessage} id="message-footer">
+					<input
+						type="text"
+						placeholder="Write message"
+						className="message"
+						value={message}
+						onChange={(e) => setMessage(e.target.value)}
+						onKeyDown={handleTyping}
+						ref={messageInputRef}
+					/>
+					{showEmojiPicker && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
+					<div className="buttons-container">
+						<button type="submit" className="send-btn">SEND</button>
+						{/* <button className="smileyPicker-btn" onClick={toggleEmojiPicker}>
+							{showEmojiPicker ? 'HIDE SMILEYS' : 'SHOW SMILEYS'}
+						</button> */}
+					</div>
+					{showColorPicker && <ColorPicker onColorSelect={handleColorSelect}/>}
+				</form>
+			</div>
 		</div>
 	);
 };

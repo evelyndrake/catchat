@@ -77,7 +77,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 			<header className="chat-mainHeader">
 				<div className="chat-serverinfo">
 					<h3>{serverName}</h3>
-					<p style={{fontSize: "16px"}}>{serverDescription}</p>
+					<p className="subtitle">{serverDescription}</p>
 				</div>
 				<div className="chat-topButtons">
 					<button className="smileyPicker-btn" onClick={copyInviteCode}>SHARE</button>
