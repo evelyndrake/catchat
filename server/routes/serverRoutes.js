@@ -100,6 +100,32 @@ router.post('/api/servers/:code/join', async (req, res) => {
 	res.json(account.servers);
 });
 
+// Endpoint to have a user leave a server
+router.post('/api/servers/:code/leave', async (req, res) => {
+	const serverCode = req.params.code;
+	const accountUsername = req.body.username;
+	const account = await Account.findOne({ username: accountUsername });
+	if (!account) {
+		return res.status(404).json({
+			message: "Account not found",
+		});
+	}
+	const server = await Server.findOne({ code: serverCode });
+	if (!server) {
+		return res.status(404).json({
+			message: "Server not found",
+		});
+	}
+	if (!account.servers.includes(serverCode)) {
+		return res.status(400).json({
+			message: "Not in server",
+		});
+	}
+	account.servers = account.servers.filter(code => code !== serverCode);
+	await account.save();
+	res.json(account.servers);
+});
+
 // Endpoint to get all usernames of all members in a server
 router.get('/api/servers/:code/members', async (req, res) => {
 	const serverCode = req.params.code;

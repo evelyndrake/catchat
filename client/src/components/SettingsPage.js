@@ -3,7 +3,7 @@ import ChatBar from "./ChatBar";
 import toast, { Toaster } from "react-hot-toast";
 import { useDarkmode } from "../DarkModeContext.js";
 
-const CreateServerPage = ({socket}) => {
+const SettingsPage = ({socket}) => {
 
     const [darkMode, setDarkMode] = useState(() => {
         // Initialize darkMode state based on local storage
@@ -45,4 +45,4 @@ const CreateServerPage = ({socket}) => {
     );
 };
 
-export default CreateServerPage;
+export default SettingsPage;

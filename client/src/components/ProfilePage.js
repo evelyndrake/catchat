@@ -207,6 +207,7 @@ const ProfilePage = ({ socket }) => {
 					))}
 				</div>
 				<h3 style={{marginTop: '5px', marginBottom: '5px'}}>All badges:</h3>
+				<p style={{textAlign: 'left'}}className="message-timestamp">These badges have been scraped from various websites, and we do not necessarily endorse any content presented.</p>
 				<input
 					className="chat-bio"
 					type="text"

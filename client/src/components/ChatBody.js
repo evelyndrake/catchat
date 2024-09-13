@@ -11,6 +11,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 	const [visibleProfile, setVisibleProfile] = useState(false);
 	const [selectedUsername, setSelectedUsername] = useState("");
 	const [serverName , setServerName] = useState("");
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const { server } = useParams();
 	const [serverDescription, setServerDescription] = useState("");
 	
@@ -25,8 +26,36 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 		setSelectedUsername(username);
 	};
 
+	const handleDropDown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
+
+	// const handleClickOutside = (event) => {
+	// 	if (event.target.className !== "smileyPicker-btn" || event.target.className !== "dropdown-item") {
+	// 		setIsDropdownOpen(false);
+	// 	}
+	// };
+
+	const handleLeaveServer = () => {
+		if (server === "9ypdn3") {
+			toast.error("You cannot leave the default server!");
+			return;
+		}
+		if (window.confirm("Are you sure you want to leave this server?")) {
+			axios.post(`http://localhost:4000/api/servers/${server}/leave`, { username: localStorage.getItem("userName") });
+	
+			// navigate("/chat/9ypdn3");
+			window.location.reload();
+		
+		}
+		
+	}
+
+
+
 	// On server change, set server name
 	useEffect(() => {
+
 		axios.get(`http://localhost:4000/api/servers/${server}`)
 			.then((response) => {
 				setServerName(response.data.displayName);
@@ -80,10 +109,19 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
 					<p className="subtitle">{serverDescription}</p>
 				</div>
 				<div className="chat-topButtons">
-					<button className="smileyPicker-btn" onClick={copyInviteCode}>SHARE</button>
-					<button className="leaveChat-btn" onClick={handleLeaveChat} style={{marginLeft: "15px"}}>
+				<button className="smileyPicker-btn" onClick={handleDropDown}>MENU</button>
+                    {isDropdownOpen && (
+                        <div className="dropdown-menu">
+							<button className="dropdown-item" onClick={copyInviteCode}>🔗 Copy invite code</button>
+							<button className="dropdown-item" onClick={handleLeaveChat}>🚪 Log out</button>
+							<button className="dropdown-item" onClick={handleDropDown}>❌ Close</button>
+							{/* <button className="dropdown-item" onClick={handleLeaveServer}>Leave server</button> */}
+						</div>
+					)}
+					{/* <button className="smileyPicker-btn" onClick={copyInviteCode}>SHARE</button> */}
+					{/* <button className="leaveChat-btn" onClick={handleLeaveChat} style={{marginLeft: "15px"}}>
 						LOG OUT
-					</button>
+					</button> */}
 				</div>
 			</header>
 			{setVisibleProfile && <ProfileCard username={selectedUsername} isVisible={visibleProfile} toggleVisible={toggleProfileCard}/>}

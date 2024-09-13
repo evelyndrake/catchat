@@ -67,6 +67,9 @@ const ChatBar = ({ socket }) => {
 						<li>
 							<Link to="/settings">Settings</Link>
 						</li>
+						<li>
+							<Link to="/about">About</Link>
+						</li>
 					</ul>
                 </div>
 				{/* <h4 className="chat-header">ACTIVE USERS</h4>
