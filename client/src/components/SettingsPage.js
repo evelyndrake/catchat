@@ -40,6 +40,7 @@ const SettingsPage = ({socket}) => {
                     checked={darkMode}
                     onChange={(e) => changeDarkMode(e.target.checked)}
                 />
+                <p className="setting-description">Enable dark mode for a better night-time experience.</p>
             </div>
         </div>
     );

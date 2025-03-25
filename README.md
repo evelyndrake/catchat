@@ -10,7 +10,13 @@ A simple chat client. Implemented as a web app using React and Socket.io. Curren
 - Notification sounds
 - *"User is typing..."* indicators
 ---
+![](docs/image-46.png)
+![](docs/image-42.png)
+![](docs/image-47.png)
+![](docs/image-51.png)
+*Demo (old):*
 ![](docs/demo1.gif)
+
 ### Setup Instructions
 - Clone this repository
 - Create a `.env` file in `server`
